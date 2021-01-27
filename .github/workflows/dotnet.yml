@@ -43,4 +43,12 @@ jobs:
       with:
         name: linux-x64
         path: ./TestApp/bin/Release/net5.0/linux-x64/publish/
+  
+  create-prerelase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Linux Artifacts
+        uses: actions/download-artifact@v2.0.8
+      - name: List files
+        run: tree
 
