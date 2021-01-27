@@ -51,5 +51,5 @@ jobs:
       - name: Get Linux Artifacts
         uses: actions/download-artifact@v2.0.8
       - name: List files
-        run: tree
+        run: find . -print | sed -e "s;[^/]*/;|____;g;s;____|; |;g"
 
