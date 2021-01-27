@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Publish Win-x64
-      run: dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=true
+      run: dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=true ./TestApp/TestApp.csproj
     - name: Upload Win64 Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
