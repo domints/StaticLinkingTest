@@ -37,7 +37,7 @@ jobs:
         name: osx-x64
         path: ./TestApp/bin/Release/net5.0/osx-x64/publish/
     - name: Publish Linux-x64
-      run: dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=true -p:PublishSingleFile=true /p:PublishTrimmed=true ./TestApp/TestApp.csproj
+      run: dotnet publish -c Release -r linux-x64 -p:PublishSingleFile=true /p:PublishTrimmed=true ./TestApp/TestApp.csproj
     - name: Upload OSX Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
