@@ -50,7 +50,22 @@ jobs:
     steps:
       - name: Get Linux Artifacts
         uses: actions/download-artifact@v2.0.8
-      - name: Archive Release
+      - name: Create Win-x64 archive
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: 'win-x64.zip'
+          path: 'win-x64'
+      - name: Create Win-x86 archive
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: 'win-x86.zip'
+          path: 'win-x86'
+      - name: Create OSX archive
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: 'osx-x64'
+          path: 'osx-x64'
+      - name: Create Linux archive
         uses: thedoctor0/zip-release@master
         with:
           filename: 'linux-x64.zip'
@@ -61,12 +76,29 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          draft: true
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload Win-x86 Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./win-x86.zip
+          asset_name: win-x86.zip
+          asset_content_type: application/zip
+      - name: Upload Win-x64 Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./win-x64.zip
+          asset_name: win-x64.zip
+          asset_content_type: application/zip 
+      - name: Upload Linux Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -75,4 +107,12 @@ jobs:
           asset_path: ./linux-x64.zip
           asset_name: linux-x64.zip
           asset_content_type: application/zip
-
+      - name: Upload OSX Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./osx-x64.zip
+          asset_name: osx-x64.zip
+          asset_content_type: application/zip
