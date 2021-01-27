@@ -1,0 +1,48 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./TestApp
+      
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Publish Win-x64
+      run: dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=true
+    - name: Upload Win64 Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: win-x64
+        path: ./bin/Release/net5.0/win-x64/publish/
+    - name: Publish Win-x86
+      run: dotnet publish -c Release -r win-x86 -p:PublishReadyToRun=true
+    - name: Upload Win86 Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: win-x86
+        path: ./bin/Release/net5.0/win-x86/publish/
+    - name: Publish OSX 10.12+
+      run: dotnet publish -c Release -r osx-x64 -p:PublishReadyToRun=true
+    - name: Upload OSX Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: osx-x64
+        path: ./bin/Release/net5.0/osx-x64/publish/
+    - name: Publish Linux-x64
+      run: dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=true
+    - name: Upload OSX Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: linux-x64
+        path: ./bin/Release/net5.0/linux-x64/publish/
+
